@@ -12,17 +12,22 @@ const path = require('path');
  * 静的ファイルは `out/` ディレクトリを基準に参照します。
  */
 
-// プロジェクトルートを基準としたパス
+// ルートディレクトリとソースディレクトリのパス
 const rootDir = path.resolve(__dirname, '.');
-const outDir = path.resolve(rootDir, 'out');
+const srcDir = path.resolve(rootDir, 'src');
 
 // サーバースクリプトのパス
-const serverScript = path.join(outDir, 'api', 'server.js');
+const serverScript = path.join(srcDir, 'api', 'server.js');
 
 /**
- * サーバーをバックグラウンドで起動
- * @param {string} scriptPath - 起動するサーバースクリプトのパス
- * @returns {ChildProcess} サーバープロセス
+ * サーバーをバックグラウンドで起動します。
+ *
+ * @param {string} scriptPath - 起動するサーバースクリプトのパス。
+ * @returns {import('child_process').ChildProcess} サーバープロセスオブジェクト。
+ * 
+ * @example
+ * const serverProcess = startServer('/path/to/server.js');
+ * serverProcess.on('exit', () => console.log('Server process exited'));
  */
 function startServer(scriptPath) {
   const serverProcess = exec(`node ${scriptPath}`, (error, stdout, stderr) => {
@@ -39,9 +44,16 @@ function startServer(scriptPath) {
 }
 
 /**
- * NW.js アプリケーションを起動
- * @param {string} baseDir - NW.js のエントリーポイントディレクトリ
- * @param {ChildProcess} serverProcess - サーバープロセス
+ * NW.js アプリケーションを起動します。
+ *
+ * @param {string} baseDir - NW.js アプリケーションのエントリーポイントディレクトリ。
+ * @param {import('child_process').ChildProcess} serverProcess - サーバープロセスオブジェクト。
+ * 
+ * @returns {import('child_process').ChildProcess} NW.js プロセスオブジェクト。
+ * 
+ * @example
+ * const nwProcess = startNW('/path/to/app', serverProcess);
+ * nwProcess.on('exit', () => console.log('NW.js process exited'));
  */
 function startNW(baseDir, serverProcess) {
   const nwProcess = exec(`nw ${baseDir}`, (error, stdout, stderr) => {
@@ -53,7 +65,7 @@ function startNW(baseDir, serverProcess) {
     console.log(stdout);
   });
 
-  // プロセス終了時のクリーンアップ
+  // メインプロセス終了時のクリーンアップ
   process.on('exit', () => {
     serverProcess.kill();
   });
