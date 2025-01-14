@@ -1,49 +1,65 @@
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 import { promises as fs } from 'fs';
-import { class2023 } from '../data/classData';
+import { classDataDummy } from '../data/classData';
 
-// ts-node db/scripts/initDatabase.ts
-// で実行
+/**
+ * データベースを初期化するスクリプト。
+ * - テーブルを作成
+ * - ダミーデータを挿入
+ *
+ * 実行方法:
+ * ts-node db/scripts/initDatabase.ts
+ */
 const initializeDatabase = async () => {
-  // データベースを開く/作成
-  const db = await open({
-    filename: './db/database.sqlite',
-    driver: sqlite3.Database,
-  });
+  try {
+    // データベースを開く/作成
+    const db = await open({
+      filename: './db/database.sqlite',
+      driver: sqlite3.Database,
+    });
 
-  await db.exec(`
-    ${await import('fs/promises').then(fs => fs.readFile('./db/schema.sql', 'utf-8'))}
-  `);
+    // スキーマファイルの内容を読み込んで実行
+    const schema = await fs.readFile('./db/schema.sql', 'utf-8');
+    await db.exec(schema);
 
-  // データを挿入
-  const insertQuery = `
-    INSERT INTO classes (
-      academicYear, semester, dayOfWeek, period, instructor, subjectName, classNumber, credits, url, category, facultyCode
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-  `;
+    console.log('スキーマを適用しました。');
 
-  for (const classData of class2023) {
-    await db.run(insertQuery, [
-      classData.academicYear,
-      classData.semester,
-      classData.dayOfWeek,
-      classData.period,
-      classData.instructor,
-      classData.subjectName,
-      classData.classNumber,
-      classData.credits,
-      classData.url,
-      classData.category,
-      classData.facultyCode,
-    ]);
+    // データ挿入クエリ
+    const insertQuery = `
+      INSERT INTO classes (
+        code, name, url, teacher, type, credit, year, term, day, period
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `;
+
+    // ダミーデータを挿入
+    for (const classData of classDataDummy) {
+      await db.run(insertQuery, [
+        classData.code,
+        classData.name,
+        classData.url,
+        classData.teacher,
+        classData.type,
+        classData.credit,
+        classData.year,
+        classData.term,
+        classData.day,
+        classData.period,
+      ]);
+    }
+
+    console.log('ダミーデータを挿入しました。');
+
+    // データベースを閉じる
+    await db.close();
+    console.log('データベースの初期化が完了しました。');
+  } catch (error) {
+    console.error('データベースの初期化中にエラーが発生しました:', error);
   }
-
-  console.log('データベースの初期化が完了しました。');
-  await db.close();
 };
 
-initializeDatabase().catch(console.error);
+// スクリプトの実行
+initializeDatabase();
 
 /* 
 sqlite3 database.sqlite
