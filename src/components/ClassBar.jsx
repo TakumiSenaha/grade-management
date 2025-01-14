@@ -97,13 +97,13 @@ export default function ClassBar() {
     }
   };  
 
-  useEffect(()=>{
-    console.log("in useEffect")
+  useEffect(() => {
+    console.log("in useEffect");
     console.log(classes);
     console.log(classesInfo);
     console.log(year);
     console.log(totalClassCredit);
-  },[classesInfo]);
+  }, [classes, classesInfo, totalClassCredit, year]);
 
   const deleteClass = (idx) => {
     setClasses(classes.filter((_, index ) => index !== idx));
