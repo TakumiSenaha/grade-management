@@ -4,7 +4,7 @@
   "main": "out/index.html",
   "private": true,
   "scripts": {
-    "build": "next build && next export",
+    "build": "next build",
     "start": "node start.js",
     "lint": "next lint",
     "setup-db": "ts-node db/scripts/initDatabase.ts",
