@@ -29,33 +29,27 @@ export default function ClassBar() {
     setText(e.target.value);
   }, []);
 
-  const fetchClassData = async() => {
+  const fetchClassData = async () => {
     const formatText = text.trim().toUpperCase();
-
-    if (classes.includes(formatText)){
+  
+    if (classes.includes(formatText)) {
       alert("既に登録された授業です！");
       setText("");
       return 0;
     }
-
-    if (formatText==""){
+  
+    if (formatText === "") {
       return 0;
     }
-
-    const response = await fetch("https://tmu-syllabus-default-rtdb.firebaseio.com/2022/"+ formatText + ".json");
-
-    const classDataJson = await response.json();
-
-    if(!response.ok){
-      throw new Error("無効な授業コードです！");
+  
+    const response = await fetch(`/api/classes?classNumber=${formatText}`);
+    const classData = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(classData.error || "無効な授業コードです！");
     }
-    
-    else if(classDataJson === null){
-      setText("");
-      throw new Error("無効な授業コードです！");
-    }
-    
-    return classDataJson;
+  
+    return classData;
   };
 
   const handleClick2 = async() => {
