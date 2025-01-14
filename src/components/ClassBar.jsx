@@ -52,39 +52,50 @@ export default function ClassBar() {
     return classData;
   };
 
-  const handleClick2 = async() => {
-    try{
+  const handleClick2 = async () => {
+    try {
       const classDataJson = await fetchClassData();
-
-      setTotalClassCredit(prevNum => prevNum + Number(classDataJson.credit));
-
-      if(reseachClassCode.includes(classDataJson.code)){
-        setReseachClassCredit(prevNum => prevNum + Number(classDataJson.credit));
+      console.log("Fetched Class Data:", classDataJson);
+  
+      // 総単位数を更新
+      const credit = Number(classDataJson.credit);
+      console.log("Credit Value:", credit);
+      setTotalClassCredit((prevNum) => prevNum + credit);
+  
+      // 特別研究Ⅰ~Ⅳの場合
+      if (reseachClassCode.includes(classDataJson.code)) {
+        console.log("Reseach Class Matched:", classDataJson.code);
+        setReseachClassCredit((prevNum) => prevNum + credit);
       }
-
-      else if(projectClassCode.includes(classDataJson.code)){
-        setprojectClassCredit(prebNum => prebNum + Number(classDataJson.credit));
+      // 研究プロジェクトの場合
+      else if (projectClassCode.includes(classDataJson.code)) {
+        console.log("Project Class Matched:", classDataJson.code);
+        setprojectClassCredit((prevNum) => prevNum + credit);
       }
-
-      else if(specialClassCode.includes(classDataJson.code)){
-        setspecialClassCredit(prebNum => prebNum + Number(classDataJson.credit));
+      // 特論の場合
+      else if (specialClassCode.includes(classDataJson.code)) {
+        console.log("Special Class Matched:", classDataJson.code);
+        setspecialClassCredit((prevNum) => prevNum + credit);
       }
-
-      else if(classDataJson.type === "電子情報システム工学域"){
-        setMajorClassCredit(prebNum => prebNum + Number(classDataJson.credit));
+      // 所属学域科目の場合
+      else if (classDataJson.type === "電子情報システム工学域") {
+        console.log("Major Class Matched:", classDataJson.type);
+        setMajorClassCredit((prevNum) => prevNum + credit);
       }
-      
-      setClasses(classes => [text.trim().toUpperCase(),...classes]);
-      setClassesInfo(classesInfo => [classDataJson,...classesInfo]);
+  
+      // 登録済みのクラスリストを更新
+      setClasses((classes) => [text.trim().toUpperCase(), ...classes]);
+      setClassesInfo((classesInfo) => [classDataJson, ...classesInfo]);
       setText("");
-    } 
-    catch(error){
+  
+      console.log("State Updated Successfully");
+    } catch (error) {
       alert(error);
-    } 
-    finally{
-      console.log("fetch()終了")
+      console.error("Error in handleClick2:", error);
+    } finally {
+      console.log("fetch()終了");
     }
-  }
+  };  
 
   useEffect(()=>{
     console.log("in useEffect")
