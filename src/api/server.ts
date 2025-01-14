@@ -1,63 +1,43 @@
 import express from 'express';
-import * as sqlite3 from 'sqlite3';
-import { Database } from 'sqlite';
-import { open } from 'sqlite';
-import * as path from 'path';
+import { getDatabase, getClassByNumber, getAllClasses } from '../utils/db';
+import { handleApiError } from '../utils/errorHandler';
 
 const PORT = 3000;
 
-
-/**
- * Opens a connection to the SQLite database.
- *
- * @returns {Promise<Database>} A promise that resolves to the database connection.
- */
-const getDatabase = async (): Promise<Database<sqlite3.Database, sqlite3.Statement>> => {
-  return open({
-    filename: path.join(__dirname, '../../db/database.sqlite'),
-    driver: sqlite3.Database,
-  });
-};
-
 /**
  * Starts the Express server and sets up the API endpoints.
- *
- * @returns {Promise<void>} A promise that resolves when the server has started.
+ * 
+ * Endpoints:
+ * - **GET** `/api/classes`: Retrieves all classes.
+ * - **GET** `/api/classes?classNumber=<code>`: Retrieves a specific class by its code.
  */
 const startServer = async (): Promise<void> => {
   const app = express();
   const db = await getDatabase();
 
   /**
-   * Handles GET requests to `/api/classes`.
-   * - If `classNumber` is provided in the query, returns the class data for the given number.
-   * - Otherwise, returns all classes in the database.
+   * Handles requests to `/api/classes`.
    *
-   * @param {express.Request} req The request object.
-   * @param {express.Response} res The response object.
+   * - If `classNumber` is provided, retrieves the class with the specified code.
+   * - Otherwise, retrieves all classes.
    */
-  app.get('/api/classes', async (req: express.Request, res: express.Response) => {
+  app.get('/api/classes', async (req, res) => {
     const { classNumber } = req.query;
 
     try {
       if (classNumber) {
-        const classData = await db.get(
-          'SELECT * FROM classes WHERE classNumber = ?',
-          [classNumber]
-        );
-
+        const classData = await getClassByNumber(db, classNumber as string);
         if (classData) {
           res.json(classData);
         } else {
           res.status(404).json({ error: 'Class not found' });
         }
       } else {
-        const classes = await db.all('SELECT * FROM classes');
+        const classes = await getAllClasses(db);
         res.json(classes);
       }
     } catch (error) {
-      console.error('Error querying database:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      handleApiError(res, error);
     }
   });
 
@@ -66,7 +46,6 @@ const startServer = async (): Promise<void> => {
   });
 };
 
-// Start the server
 startServer().catch((err) => {
   console.error('Failed to start the server:', err);
 });
