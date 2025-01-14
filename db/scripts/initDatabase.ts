@@ -62,7 +62,7 @@ const initializeDatabase = async () => {
 initializeDatabase();
 
 /* 
-sqlite3 database.sqlite
+sqlite3 ./db/database.sqlite
 .tables;
 SELECT * FROM classes LIMIT 10;
 */
