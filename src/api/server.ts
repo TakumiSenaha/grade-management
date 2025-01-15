@@ -6,7 +6,7 @@ const PORT = 3000;
 
 /**
  * Starts the Express server and sets up the API endpoints.
- * 
+ *
  * Endpoints:
  * - **GET** `/api/classes`: Retrieves all classes.
  * - **GET** `/api/classes?classNumber=<code>`: Retrieves a specific class by its code.
