@@ -42,7 +42,8 @@ export default function ClassBar() {
       return 0;
     }
   
-    const response = await fetch(`/api/classes?classNumber=${formatText}`);
+    // TODO: 相対パスで指定できる様にする．
+    const response = await fetch(`http://localhost:3000/api/classes?classNumber=${formatText}`);
     const classData = await response.json();
   
     if (!response.ok) {
