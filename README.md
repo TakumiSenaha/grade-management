@@ -9,8 +9,6 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 To run the application in development mode:
 
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 
@@ -23,7 +21,7 @@ You can edit the page by modifying files in the `src` directory. The application
 Before running the application, initialize the SQLite database:
 
 ```bash
-npm run setup-db
+yarn run setup-db
 ```
 
 This will create the necessary database structure and populate initial data.
@@ -43,13 +41,13 @@ This application has been converted into a desktop application using NW.js. Foll
 1. Build the application:
 
    ```bash
-   npm run build
+   yarn run build
    ```
 
 2. Start the NW.js application:
 
    ```bash
-   npm start
+   yarn start
    ```
 
    This will start both the local API server and the NW.js application.
@@ -81,14 +79,14 @@ Check out the [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ### Development and Setup
 
-- **Install dependencies**: `npm install`
-- **Initialize database**: `npm run setup-db`
-- **Start development mode**: `npm run dev`
+- **Install dependencies**: `yarn install`
+- **Initialize database**: `yarn run setup-db`
+- **Start development mode**: `yarn run dev`
 
 ### Build and Deploy
 
-- **Build static files**: `npm run build`
-- **Run the application**: `npm start`
+- **Build static files**: `yarn run build`
+- **Run the application**: `yarn start`
 
 ### SQLite Commands
 
