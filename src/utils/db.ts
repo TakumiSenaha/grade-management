@@ -5,10 +5,12 @@ import * as path from 'path';
 /**
  * Opens a connection to the SQLite database.
  *
- * @returns {Promise<Database<sqlite3.Database, sqlite3.Statement>>} 
+ * @returns {Promise<Database<sqlite3.Database, sqlite3.Statement>>}
  * A promise that resolves to a Database object for SQLite interactions.
  */
-export const getDatabase = async (): Promise<Database<sqlite3.Database, sqlite3.Statement>> => {
+export const getDatabase = async (): Promise<
+  Database<sqlite3.Database, sqlite3.Statement>
+> => {
   const dbPath = path.resolve(process.cwd(), 'db/database.sqlite');
   return open({
     filename: dbPath,
@@ -23,7 +25,10 @@ export const getDatabase = async (): Promise<Database<sqlite3.Database, sqlite3.
  * @param {string} classNumber - The class number to search for.
  * @returns {Promise<any>} A promise that resolves to the class data, or `undefined` if not found.
  */
-export const getClassByNumber = async (db: Database, classNumber: string): Promise<any> => {
+export const getClassByNumber = async (
+  db: Database,
+  classNumber: string,
+): Promise<any> => {
   return db.get('SELECT * FROM classes WHERE code = ?', [classNumber]);
 };
 

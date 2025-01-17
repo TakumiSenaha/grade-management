@@ -4,15 +4,18 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 /**
  * API handler for retrieving class data.
- * 
+ *
  * Supported methods:
  * - **GET** `/api/classes`: Retrieves all classes.
  * - **GET** `/api/classes?classNumber=<code>`: Retrieves a specific class by its code.
- * 
+ *
  * @param {NextApiRequest} req - The API request object.
  * @param {NextApiResponse} res - The API response object.
  */
-export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+): Promise<void> {
   try {
     const db = await getDatabase();
 
