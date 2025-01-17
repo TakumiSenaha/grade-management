@@ -1,26 +1,49 @@
 {
   "name": "grade-management",
   "version": "0.1.0",
+  "main": "out/index.html",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "node start.js",
+    "lint": "next lint",
+    "setup-db": "ts-node db/scripts/initDatabase.ts",
+    "dev": "ts-node-dev --respawn db/scripts/initDatabase.ts"
   },
   "dependencies": {
     "chart.js": "^4.0.1",
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
-    "next": "13.0.6",
+    "express": "^4.21.2",
+    "next": "^15.1.4",
+    "nw": "^0.94.1-1",
     "react": "18.2.0",
     "react-chartjs-2": "^5.0.1",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.6",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "@types/sqlite3": "^3.1.11",
     "autoprefixer": "^10.4.13",
+    "eslint": "^8.51.0",
     "postcss": "^8.4.20",
-    "tailwindcss": "^3.2.4"
+    "tailwindcss": "^3.2.4",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.3"
+  },
+  "nwjs": {
+    "window": {
+      "title": "Grade Management",
+      "width": 2560,
+      "height": 1600
+    },
+    "chromium-args": "--enable-node-worker"
   }
 }

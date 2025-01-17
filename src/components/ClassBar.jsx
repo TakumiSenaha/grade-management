@@ -29,76 +29,82 @@ export default function ClassBar() {
     setText(e.target.value);
   }, []);
 
-  const fetchClassData = async() => {
+  const fetchClassData = async () => {
     const formatText = text.trim().toUpperCase();
-
-    if (classes.includes(formatText)){
+  
+    if (classes.includes(formatText)) {
       alert("既に登録された授業です！");
       setText("");
       return 0;
     }
-
-    if (formatText==""){
+  
+    if (formatText === "") {
       return 0;
     }
-
-    const response = await fetch("https://tmu-syllabus-default-rtdb.firebaseio.com/2022/"+ formatText + ".json");
-
-    const classDataJson = await response.json();
-
-    if(!response.ok){
-      throw new Error("無効な授業コードです！");
+  
+    // TODO: 相対パスで指定できる様にする．
+    const response = await fetch(`http://localhost:3000/api/classes?classNumber=${formatText}`);
+    const classData = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(classData.error || "無効な授業コードです！");
     }
-    
-    else if(classDataJson === null){
-      setText("");
-      throw new Error("無効な授業コードです！");
-    }
-    
-    return classDataJson;
+  
+    return classData;
   };
 
-  const handleClick2 = async() => {
-    try{
+  const handleClick2 = async () => {
+    try {
       const classDataJson = await fetchClassData();
-
-      setTotalClassCredit(prevNum => prevNum + Number(classDataJson.credit));
-
-      if(reseachClassCode.includes(classDataJson.code)){
-        setReseachClassCredit(prevNum => prevNum + Number(classDataJson.credit));
+      console.log("Fetched Class Data:", classDataJson);
+  
+      // 総単位数を更新
+      const credit = Number(classDataJson.credit);
+      console.log("Credit Value:", credit);
+      setTotalClassCredit((prevNum) => prevNum + credit);
+  
+      // 特別研究Ⅰ~Ⅳの場合
+      if (reseachClassCode.includes(classDataJson.code)) {
+        console.log("Reseach Class Matched:", classDataJson.code);
+        setReseachClassCredit((prevNum) => prevNum + credit);
       }
-
-      else if(projectClassCode.includes(classDataJson.code)){
-        setprojectClassCredit(prebNum => prebNum + Number(classDataJson.credit));
+      // 研究プロジェクトの場合
+      else if (projectClassCode.includes(classDataJson.code)) {
+        console.log("Project Class Matched:", classDataJson.code);
+        setprojectClassCredit((prevNum) => prevNum + credit);
       }
-
-      else if(specialClassCode.includes(classDataJson.code)){
-        setspecialClassCredit(prebNum => prebNum + Number(classDataJson.credit));
+      // 特論の場合
+      else if (specialClassCode.includes(classDataJson.code)) {
+        console.log("Special Class Matched:", classDataJson.code);
+        setspecialClassCredit((prevNum) => prevNum + credit);
       }
-
-      else if(classDataJson.type === "電子情報システム工学域"){
-        setMajorClassCredit(prebNum => prebNum + Number(classDataJson.credit));
+      // 所属学域科目の場合
+      else if (classDataJson.type === "電子情報システム工学域") {
+        console.log("Major Class Matched:", classDataJson.type);
+        setMajorClassCredit((prevNum) => prevNum + credit);
       }
-      
-      setClasses(classes => [text.trim().toUpperCase(),...classes]);
-      setClassesInfo(classesInfo => [classDataJson,...classesInfo]);
+  
+      // 登録済みのクラスリストを更新
+      setClasses((classes) => [text.trim().toUpperCase(), ...classes]);
+      setClassesInfo((classesInfo) => [classDataJson, ...classesInfo]);
       setText("");
-    } 
-    catch(error){
+  
+      console.log("State Updated Successfully");
+    } catch (error) {
       alert(error);
-    } 
-    finally{
-      console.log("fetch()終了")
+      console.error("Error in handleClick2:", error);
+    } finally {
+      console.log("fetch()終了");
     }
-  }
+  };  
 
-  useEffect(()=>{
-    console.log("in useEffect")
+  useEffect(() => {
+    console.log("in useEffect");
     console.log(classes);
     console.log(classesInfo);
     console.log(year);
     console.log(totalClassCredit);
-  },[classesInfo]);
+  }, [classes, classesInfo, totalClassCredit, year]);
 
   const deleteClass = (idx) => {
     setClasses(classes.filter((_, index ) => index !== idx));
