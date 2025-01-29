@@ -7,7 +7,7 @@ import InputForm from './InputForm';
 export default function ClassBar() {
   const [text, setText] = useState('');
   const [classes, setClasses] = useState([]);
-  const [year, setYear] = useState('2022');
+  const [year, setYear] = useState('2024');
   const [classesInfo, setClassesInfo] = useState([]);
 
   // 総単位数

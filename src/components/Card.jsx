@@ -9,7 +9,7 @@ export default function Card(props) {
         </span>
         <button
           onClick={() => props.deleteMethod(props.index)}
-          className="bg-slate-500 hover:bg-slate-700 text-white py-1 px-4 rounded-lg"
+          className="bg-red-400 hover:bg-red-700 text-white py-1 px-4 rounded-lg"
         >
           削除
         </button>
