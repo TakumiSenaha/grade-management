@@ -30,7 +30,7 @@ export default function InputForm(props) {
             ref={inputElement}
             name="code"
             id="code"
-            className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-blue-400 focus:ring-blue-400 sm:text-sm"
+            className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-green-400 focus:ring-green-400 sm:text-sm"
             placeholder="T0000"
           />
 
@@ -43,7 +43,7 @@ export default function InputForm(props) {
               defaultValue="2022"
               id="select-year"
               name="select-year"
-              className="h-full rounded-md border-transparent bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:border-blue-400 focus:ring-blue-400 sm:text-sm"
+              className="h-full rounded-md border-transparent bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:border-green-400 focus:ring-green-400 sm:text-sm"
             >
               <option value="2022">2022年度</option>
               <option value="2021">2021年度</option>
@@ -56,7 +56,7 @@ export default function InputForm(props) {
             props.handleClick();
             refocus();
           }}
-          className="bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 ml-2 rounded-lg"
+          className="bg-green-400 hover:bg-green-600 text-white font-bold py-2 px-4 ml-2 rounded-lg"
         >
           追加
         </button>
