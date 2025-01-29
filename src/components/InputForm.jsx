@@ -40,13 +40,13 @@ export default function InputForm(props) {
             </label>
             <select
               onChange={(e) => props.setYear(e.target.value)}
-              defaultValue="2022"
+              defaultValue="2024"
               id="select-year"
               name="select-year"
               className="h-full rounded-md border-transparent bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:border-green-400 focus:ring-green-400 sm:text-sm"
             >
-              <option value="2022">2022年度</option>
-              <option value="2021">2021年度</option>
+              <option value="2024">2024年度</option>
+              <option value="2025">2025年度</option>
             </select>
           </div>
         </div>
