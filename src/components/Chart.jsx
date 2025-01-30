@@ -36,16 +36,16 @@ export const ChartBar = (props) => {
         // ゲージの「埋まっている部分」
         label: '取得単位数',
         data: [completedValue],
-        backgroundColor: 'rgba(75, 192, 192, 0.5)', // 好きな色に
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(100, 220, 120, 0.5)', // 好きな色に
+        borderColor: 'rgba(100, 220, 120, 1)',
         borderWidth: 1,
       },
       {
         // ゲージの「残りの部分」
         label: '残り単位数',
         data: [remainingValue],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)', // 好きな色に
-        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(200, 200, 200, 0.5)', // 好きな色に
+        borderColor: 'rgba(200, 200, 200, 1)',
         borderWidth: 1,
       },
     ],
